@@ -77,18 +77,10 @@ function setCardNum(i)
 
 
 //Player Code
-
 var players = [];
-var player1 = []; 
-var player2 = []; 
-var player3 = []; 
-var player4 = [];
 
-players.push(player1); 
-players.push(player2); 
-players.push(player3); 
-players.push(player4); 
-
+for (var i = 0; i < 4; i++)
+	players.push([]); 
 
  
 var max = 51;
@@ -279,6 +271,7 @@ var play;
 var pass; 
 var selected; 
 
+var cardsPlayed = Raphael(10, 20, 1000, 1000);
 var paper = Raphael(10, 20, 1000, 1000);
 var imgSrcs = ["blankCard.png", "cardSuits2.png", "blankCard2.png"];
 var arrows = ["arrowUp.png", "arrowRight.png", "arrowDown.png", "arrowLeft.png"]; 
@@ -1193,6 +1186,8 @@ function userBeatStraight(count, cardNums)
 
 function playUserFiveCards(cardNums, index, code)
 {
+	cardsPlayed.clear(); 
+
 	var cards = [];
 	var number = []; 
 	var suits = []; 
@@ -1204,9 +1199,9 @@ function playUserFiveCards(cardNums, index, code)
 			
 		destinationX = (i * 51) + 240; 
 			
-		cards[i] = paper.image(imgSrcs[0], destinationX, 200, 61, 100); 
-		number[i] = paper.text(destinationX + 11, 210, players[index][cardNums[i]].number); 
-		suits[i] = paper.image(imgSrcs[1], destinationX + 10 - suitXClip, 220 - suitYClip , 30, 30);
+		cards[i] = cardsPlayed.image(imgSrcs[0], destinationX, 200, 61, 100); 
+		number[i] = cardsPlayed.text(destinationX + 11, 210, players[index][cardNums[i]].number); 
+		suits[i] = cardsPlayed.image(imgSrcs[1], destinationX + 10 - suitXClip, 220 - suitYClip , 30, 30);
 		suits[i].attr({"clip-rect": [destinationX + 10, 220, 15, 15]}); 
 	}
 	
@@ -1282,6 +1277,8 @@ function userPlayDouble(count, cardNums)
 
 function playUserDouble(cardNums, index)
 {
+	cardsPlayed.clear(); 
+
 	var code = 'D'; 
 	
 	var cards = [];
@@ -1294,9 +1291,9 @@ function playUserDouble(cardNums, index)
 			
 		destinationX = (i * 51) + 280; 
 			
-		cards[i] = paper.image(imgSrcs[0], destinationX, 200, 61, 100); 
-		number[i] = paper.text(destinationX + 11, 210, players[index][cardNums[i]].number); 
-		suits[i] = paper.image(imgSrcs[1], destinationX + 10 - suitXClip, 220 - suitYClip , 30, 30);
+		cards[i] = cardsPlayed.image(imgSrcs[0], destinationX, 200, 61, 100); 
+		number[i] = cardsPlayed.text(destinationX + 11, 210, players[index][cardNums[i]].number); 
+		suits[i] = cardsPlayed.image(imgSrcs[1], destinationX + 10 - suitXClip, 220 - suitYClip , 30, 30);
 		suits[i].attr({"clip-rect": [destinationX + 10, 220, 15, 15]}); 
 	}
 	
@@ -1371,7 +1368,7 @@ function firstPlayer()
 			break;
 	}
 	
-	return i; 
+	return i;
 }
 
 /*function playHand (currentPlayer)
@@ -1731,17 +1728,20 @@ var start;
 //Current player plays one card and it's displayed
 function playOneCard(currentPlayer, card, index)
 {
+cardsPlayed.clear(); 
+
+
 	var code = '1'; 
 	setSuitClip(currentPlayer[card].suit); 
 	
 	//Blank Card
-	displayCard = paper.image(imgSrcs[0], 300, 200, 61, 100); 
+	displayCard = cardsPlayed.image(imgSrcs[0], 300, 200, 61, 100); 
 	
 	//Card number
-	displayNumber = paper.text(311, 210, currentPlayer[card].number); 
+	displayNumber = cardsPlayed.text(311, 210, currentPlayer[card].number); 
 	
 	//Card Suit
-	displaySuit = paper.image(imgSrcs[1], 310 - suitXClip, 220 - suitYClip , 30, 30);
+	displaySuit = cardsPlayed.image(imgSrcs[1], 310 - suitXClip, 220 - suitYClip , 30, 30);
 
 	displaySuit.attr({"clip-rect": [310, 220, 15, 15]}); 
 
@@ -1760,6 +1760,8 @@ function playOneCard(currentPlayer, card, index)
 //Current player plays a double and it's displayed
 function playDouble(card, index)
 {
+	cardsPlayed.clear(); 
+
 	var code = 'D'; 
 	
 	var cards = [];
@@ -1772,9 +1774,9 @@ function playDouble(card, index)
 			
 		destinationX = (i * 51) + 280; 
 			
-		cards[i] = paper.image(imgSrcs[0], destinationX, 200, 61, 100); 
-		number[i] = paper.text(destinationX + 11, 210, playerDubs[index][card][i].number); 
-		suits[i] = paper.image(imgSrcs[1], destinationX + 10 - suitXClip, 220 - suitYClip , 30, 30);
+		cards[i] = cardsPlayed.image(imgSrcs[0], destinationX, 200, 61, 100); 
+		number[i] = cardsPlayed.text(destinationX + 11, 210, playerDubs[index][card][i].number); 
+		suits[i] = cardsPlayed.image(imgSrcs[1], destinationX + 10 - suitXClip, 220 - suitYClip , 30, 30);
 		suits[i].attr({"clip-rect": [destinationX + 10, 220, 15, 15]}); 
 	}
 	
@@ -1796,6 +1798,9 @@ function playDouble(card, index)
 //Current player plays a five card hand and it's displayed
 function playFiveCardHand(card, index, type, code)
 { 
+	//Clear the previous cards players
+	cardsPlayed.clear(); 
+
 	var cards = [];
 	var number = []; 
 	var suits = []; 
@@ -1806,9 +1811,9 @@ function playFiveCardHand(card, index, type, code)
 			
 		destinationX = (i * 51) + 240; 
 			
-		cards[i] = paper.image(imgSrcs[0], destinationX, 200, 61, 100); 
-		number[i] = paper.text(destinationX + 11, 210, fiveCardHands[index][type][card][i].number); 
-		suits[i] = paper.image(imgSrcs[1], destinationX + 10 - suitXClip, 220 - suitYClip , 30, 30);
+		cards[i] = cardsPlayed.image(imgSrcs[0], destinationX, 200, 61, 100); 
+		number[i] = cardsPlayed.text(destinationX + 11, 210, fiveCardHands[index][type][card][i].number); 
+		suits[i] = cardsPlayed.image(imgSrcs[1], destinationX + 10 - suitXClip, 220 - suitYClip , 30, 30);
 		suits[i].attr({"clip-rect": [destinationX + 10, 220, 15, 15]}); 
 		
 	}
@@ -2082,7 +2087,7 @@ function nextPlayer(index)
 		switch (index)
 		{
 			case 1: 
-				CPUs[index] = paper.image(arrows[index], 460, 230, 26, 26); 
+				CPUs[index] = paper.image(arrows[index], 510, 230, 26, 26); 
 				break; 
 				
 			case 2: 
@@ -2092,7 +2097,7 @@ function nextPlayer(index)
 				
 			case 3: 
 				CPUs[index-1].remove(); 
-				CPUs[index] = paper.image(arrows[index], 160, 230, 26, 26); 
+				CPUs[index] = paper.image(arrows[index], 120, 230, 26, 26); 
 				break;  
 		}
 	}
@@ -2129,7 +2134,8 @@ function nextPlayer(index)
 							break;
 					}		
 				}
-								
+				
+				if (i != players[index].length)				
 				playOneCard(players[index], i, index, '1');
 				
 				//Remove invalid doubles 
