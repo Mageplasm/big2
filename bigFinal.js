@@ -602,76 +602,61 @@ function playCard()
 		}	
 	}
 	
+	//Everyone passed
+	//Problem: Play lets me resume the game even if i try to play illegal hand 
 	if (lastHandPlayed.playerNum == 0)
 	{
-		switch (count) 
+		if (count != 1 && count != 5 && count != 2)
+			error = true; 
+
+		else
 		{
-			case 1: 
-				playOneCard(players[0], cardNum, 0, '1'); 
-				error = false; 
-				
-				//Make the card we play unselected
-				cards[cardNum].selected.remove();
-				cards[cardNum].node.setAttribute('class', 'unselected'); 
-		
-				//Remove the card we play from our hand
-				players[0].splice(cardNum, 1); 
-				break; 
-			
-			case 2: 
-				if (players[0][cardNums[0]].number == players[0][cardNums[1]].number)
-				{
+			switch (count) 
+			{
+				case 1: 
+					playOneCard(players[0], cardNum, 0, '1'); 
 					error = false; 
 					
-					playUserDouble(cardNums, 0); 
-
+					//Make the card we play unselected
+					cards[cardNum].selected.remove();
+					cards[cardNum].node.setAttribute('class', 'unselected'); 
+			
+					//Remove the card we play from our hand
+					players[0].splice(cardNum, 1); 
+					break; 
 				
-					for (var i = 0; i < cardNums.length; i++) 
+				case 2: 
+					if (players[0][cardNums[0]].number == players[0][cardNums[1]].number)
 					{
-						cards[cardNums[i]].selected.remove();
-						cards[cardNums[i]].node.setAttribute('class', 'unselected'); 
-					}
-					
-					players[0].splice(cardNums[0], 1); 
-					players[0].splice(cardNums[1] - 1, 1); 
-				}
-					
+						error = false; 
+						
+						playUserDouble(cardNums, 0); 
 
-				else 
-					error = true; 
 					
-				break; 
-			
-			case 5: 
-			
-				//Check if it's a straight 
-				for (var i = 0; i < cardNums.length - 1; i++) 
-				{
-					num = convert(players[0][cardNums[i]].number); 
-					
-					if (convert(players[0][cardNums[i+1]].number) != num + 1) 
-					{
-						error = true; 
-						code = 0;
-						break; 
+						for (var i = 0; i < cardNums.length; i++) 
+						{
+							cards[cardNums[i]].selected.remove();
+							cards[cardNums[i]].node.setAttribute('class', 'unselected'); 
+						}
+						
+						players[0].splice(cardNums[0], 1); 
+						players[0].splice(cardNums[1] - 1, 1); 
 					}
-					
+						
+
 					else 
-					{
-						error = false;
-						code = 'S'; 
-					}
-				}
+						error = true; 
+						
+					break; 
 				
-				//Check if it's a flush 
+				case 5: 
 				
-				if (error) 
-				{
+					//Check if it's a straight 
 					for (var i = 0; i < cardNums.length - 1; i++) 
 					{
-						suit = players[0][cardNums[i]].suit;
-
-						if (players[0][cardNums[i+1]].suit != suit)
+						num = convert(players[0][cardNums[i]].number); 
+						
+						if (convert(players[0][cardNums[i+1]].number) != num + 1) 
 						{
 							error = true; 
 							code = 0;
@@ -681,73 +666,96 @@ function playCard()
 						else 
 						{
 							error = false;
-							code = 'F';
+							code = 'S'; 
 						}
 					}
 					
+					//Check if it's a flush 
+					
 					if (error) 
 					{
-						//Full House
-						if (players[0][cardNums[0]].number == players[0][cardNums[1]].number)
+						for (var i = 0; i < cardNums.length - 1; i++) 
 						{
-							if (players[0][cardNums[1]].number == players[0][cardNums[2]].number)
-							{
-								if (players[0][cardNums[3]].number == players[0][cardNums[4]].number)
-								{
-									error = false;
-									code = 'H';
-								}
-								
-								else
-								{
-									error = true; 
-									code = 0;
-								}
-							}
+							suit = players[0][cardNums[i]].suit;
 
-							else if (players[0][cardNums[2]].number == players[0][cardNums[3]].number) 
+							if (players[0][cardNums[i+1]].suit != suit)
 							{
-								if (players[0][cardNums[3]].number == players[0][cardNums[4]].number)
+								error = true; 
+								code = 0;
+								break; 
+							}
+							
+							else 
+							{
+								error = false;
+								code = 'F';
+							}
+						}
+						
+						if (error) 
+						{
+							//Full House
+							if (players[0][cardNums[0]].number == players[0][cardNums[1]].number)
+							{
+								if (players[0][cardNums[1]].number == players[0][cardNums[2]].number)
 								{
-									error = false; 
-									code = 'H'; 
+									if (players[0][cardNums[3]].number == players[0][cardNums[4]].number)
+									{
+										error = false;
+										code = 'H';
+									}
+									
+									else
+									{
+										error = true; 
+										code = 0;
+									}
+								}
+
+								else if (players[0][cardNums[2]].number == players[0][cardNums[3]].number) 
+								{
+									if (players[0][cardNums[3]].number == players[0][cardNums[4]].number)
+									{
+										error = false; 
+										code = 'H'; 
+									}
+									
+									else
+									{
+										error = true; 
+										code = 0;
+									}
 								}
 								
-								else
-								{
+								else 
 									error = true; 
-									code = 0;
-								}
 							}
 							
 							else 
 								error = true; 
 						}
-						
-						else 
-							error = true; 
 					}
-				}
-				
-				
-				if (error)
-					return; 
 					
-				else
-				{
-					error = false; 
-					playUserFiveCards(cardNums, 0, code); 
 					
-					for (var i = 0; i < cardNums.length; i++) 
-					{
-						cards[cardNums[i]].selected.remove();
-						cards[cardNums[i]].node.setAttribute('class', 'unselected'); 
+					if (error)
+						return; 
 						
-						players[0].splice(cardNums[i] - i, 1); 
-					} 
-				}
+					else
+					{
+						error = false; 
+						playUserFiveCards(cardNums, 0, code); 
+						
+						for (var i = 0; i < cardNums.length; i++) 
+						{
+							cards[cardNums[i]].selected.remove();
+							cards[cardNums[i]].node.setAttribute('class', 'unselected'); 
+							
+							players[0].splice(cardNums[i] - i, 1); 
+						} 
+					}
 
-				break; 	
+					break; 	
+			}
 		}
 	}
 	
