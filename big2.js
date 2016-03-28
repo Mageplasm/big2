@@ -270,9 +270,9 @@ var selected;
 //Set canvas to display images
 var cardsPlayed = Raphael(10, 20, 1000, 1000);
 var paper = Raphael(10, 20, 1000, 1000);
-var imgSrcs = ["blankCard.png", "cardSuits2.png", "blankCard2.png"];
-var buttons = ["play_clicked.png", "pass_clicked.png", "play.png", "pass.png"];
-var arrows = ["arrowUp.png", "arrowRight.png", "arrowDown.png", "arrowLeft.png"]; 
+var imgSrcs = ["Images/blankCard.png", "Images/cardSuits2.png", "Images/blankCard2.png"];
+var buttons = ["Images/play_clicked.png", "Images/pass_clicked.png", "Images/play.png", "Images/pass.png"];
+var arrows = ["Images/arrowUp.png", "Images/arrowRight.png", "Images/arrowDown.png", "Images/arrowLeft.png"]; 
 
 var playerImgs = []; 
 
