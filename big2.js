@@ -347,7 +347,10 @@ function yourTurn()
 {
 	//Buttons clickable only during user's turn 
 	play.click(playCard);
-	pass.click(resume); 
+	
+	//Can only pass if everyone else has not passed
+	if (lastHandPlayed.playerNum != 0)
+		pass.click(resume); 
 	
 	CPUs[3].remove(); 
 	userTurn = paper.image(arrows[0], 315, 125, 26, 26); 
